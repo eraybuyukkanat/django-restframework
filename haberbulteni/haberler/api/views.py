@@ -7,6 +7,9 @@ from haberler.api.serializers import MakaleSerializer
 #Class views
 from rest_framework.views import APIView
 from rest_framework.generics import get_object_or_404
+
+
+
 class MakaleListCreateAPIView(APIView):
     def get(self,request):
         makaleler = Makale.objects.filter(aktif=True)
@@ -27,6 +30,8 @@ class MakaleDetailAPIView(APIView):
     def get_object(self,pk):
         makale_instance = get_object_or_404(Makale,pk=pk)
         return makale_instance
+
+        
 
     def get(self,request,pk):
         makale = self.get_object(pk=pk)
