@@ -1,7 +1,16 @@
 from django.db import models
 
+
+class Gazeteci(models.Model):
+    isim = models.CharField(max_length=120)
+    soyadi = models.CharField(max_length=120)
+    biyografi = models.TextField(blank=True,null=True)
+
+    def __str__(self):
+        return f'{self.isim} {self.soyadi}'
+
 class Makale(models.Model):
-    yazar = models.CharField(max_length=120)
+    yazar = models.ForeignKey(Gazeteci, on_delete=models.CASCADE, related_name='makaleler')
     baslik = models.CharField(max_length=120)
     aciklama = models.CharField(max_length=200)
     metin = models.TextField()

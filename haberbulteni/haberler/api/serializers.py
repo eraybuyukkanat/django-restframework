@@ -1,11 +1,13 @@
 from rest_framework import serializers
-from haberler.models import Makale
+from haberler.models import Makale,Gazeteci
 from datetime import datetime
 from datetime import date
 from django.utils.timesince import timesince
 
 class MakaleSerializer(serializers.ModelSerializer):   
     time_since_pub = serializers.SerializerMethodField()
+    #yazar = serializers.StringRelatedField()
+    # yazar = GazeteciSerializer()
     class Meta:
         model = Makale
         fields = '__all__'
@@ -20,13 +22,23 @@ class MakaleSerializer(serializers.ModelSerializer):
         else:
             return 'Aktif degil'
         
-        
-
     def validate_yayimlanma_tarihi(value,tarih):
         today = date.today()
         if tarih > today:
             raise serializers.ValidationError('Yayimlanma tarihi ileri bir tarih olamaz!!')
         return tarih
+
+
+class GazeteciSerializer(serializers.ModelSerializer):
+    # makaleler = MakaleSerializer(many=True,read_only=True)
+    makaleler = serializers.HyperlinkedRelatedField(many=True,read_only=True,view_name='makale-detay')
+
+    class Meta:
+        model = Gazeteci
+        fields = '__all__'
+
+
+
 
 #Standard serializer
 class MakaleDefaultSerializer(serializers.Serializer):
