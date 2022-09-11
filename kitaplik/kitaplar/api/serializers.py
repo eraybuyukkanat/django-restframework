@@ -5,12 +5,11 @@ from kitaplar.models import Kitap,Yorum
 class YorumSerializer(serializers.ModelSerializer):
     class Meta:
         model = Yorum
-        fields = '__all__'
-
-
+        #fields = '__all__'
+        exclude = ['kitap']
 class KitapSerializer(serializers.ModelSerializer):
+    yorumlar = YorumSerializer(many=True,read_only=True) 
     class Meta:
-        yorumlar = YorumSerializer(many=True,read_only=True)
         model = Kitap
         fields = '__all__'
 
